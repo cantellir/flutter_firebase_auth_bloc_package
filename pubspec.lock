@@ -11,11 +11,9 @@ packages:
   bloc_package:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "250846b25701a7fe481d861c2f9b0fe9c958d3d3"
-      url: "git@github.com:cantellir/flutter_bloc_package.git"
-    source: git
+      name: bloc_package
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   boolean_selector:
     dependency: transitive
@@ -48,11 +46,9 @@ packages:
   firebase_auth_package:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1d98b16242ba8391b46dd012700d82afbfdb5aed"
-      url: "git@github.com:cantellir/flutter_firebase_auth_package.git"
-    source: git
+      name: firebase_auth_package
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   firebase_core:
     dependency: transitive
