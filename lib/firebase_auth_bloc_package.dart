@@ -1,74 +1,38 @@
 library firebase_auth_bloc_package;
 
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:bloc_package/bloc_package.dart';
 import 'package:firebase_auth_package/firebase_auth_package.dart';
 
-enum AuthView { Login, Register, PasswordRecovery }
+enum AuthState { Uninitialized, Unauthenticated, Authenticated }
 
-class AuthBloc extends BaseLoadingBloc {
-  final _authView = BehaviorSubject<AuthView>();
-  Stream<AuthView> get authViewStream => _authView.stream;
-  final _authFunctions = AuthFunctions();
+class AuthBloc extends BlocBase {
+  final AuthFunctions _authFunctions;
 
-  void setAuthView(AuthView authView) {
-    _authView.sink.add(authView);
+  final _authState = BehaviorSubject<AuthState>.seeded(AuthState.Uninitialized);
+  Stream<AuthState> get authStateStream => _authState.stream;
+  Sink<AuthState> get _authStateSink => _authState.sink;
+
+  AuthBloc({@required AuthFunctions authFunctions})
+      : assert(authFunctions != null),
+        _authFunctions = authFunctions;
+
+  void setAuthState({@required AuthState authState}) {
+    _authStateSink.add(authState);
   }
 
-  Future<void> register(
-      String email, String password, String passwordConfirmation) async {
-    setLoading(true);
-    return await _authFunctions
-        .register(email, password, passwordConfirmation)
-        .whenComplete(() {
-      setLoading(false);
-    });
-  }
+  Future<void> startApp() async {
+    if (await _authFunctions.isLoggedIn()) {
+      return setAuthState(authState: AuthState.Authenticated);
+    }
 
-  Future<void> login(String email, String password) async {
-    setLoading(true);
-    return await _authFunctions.login(email, password).whenComplete(() {
-      setLoading(false);
-    });
-  }
-
-  Future<void> loginByGoogle() async {
-    setLoading(true);
-    return await _authFunctions.loginByGoogle().whenComplete(() {
-      setLoading(false);
-    });
-  }
-
-  Future<void> loginByFacebook() async {
-    setLoading(true);
-    return await _authFunctions.loginByFacebook().whenComplete(() {
-      setLoading(false);
-    });
-  }
-
-  Future<void> recoverPassword(String email) async {
-    setLoading(true);
-    return await _authFunctions.recoverPassword(email).whenComplete(() {
-      setLoading(false);
-    });
-  }
-
-  Future<void> logout() async {
-    await _authFunctions.logout();
+    return setAuthState(authState: AuthState.Unauthenticated);
   }
 
   @override
   void dispose() {
-    _authView?.close();
-    super.dispose();
+    _authState.close();
   }
-
-  static final AuthBloc _authBloc = AuthBloc._internal();
-
-  factory AuthBloc() {
-    return _authBloc;
-  }
-
-  AuthBloc._internal();
 }

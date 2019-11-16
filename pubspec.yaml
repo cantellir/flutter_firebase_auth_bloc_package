@@ -1,6 +1,6 @@
 name: firebase_auth_bloc_package
 description: A Flutter package that implements a bloc pattern for firebase auth popular methods.
-version: 0.0.1
+version: 0.0.2
 author: Rodrigo Cantelli <cantelli.r@gmail.com>
 homepage: https://github.com/cantellir
 repository: https://github.com/cantellir/flutter_firebase_auth_bloc_package
@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
 
   rxdart: ^0.22.4
-  bloc_package: ^0.0.1
-  firebase_auth_package: ^0.0.1
+  bloc_package: ^0.0.2
+  firebase_auth_package: ^0.0.2
 
 dev_dependencies:
   flutter_test:
